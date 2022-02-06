@@ -2,16 +2,25 @@
 package main
 
 import (
+	"log"
+	"os"
+
+	c "github.com/Seifbarouni/go-service-registry/controllers"
 	d "github.com/Seifbarouni/go-service-registry/database"
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	d.InitializeDB()
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	d.InitializeDB(os.Getenv("DB_CONN"))
 	app := fiber.New()
 
-	/* app.Get("/services/:serviceName", c.GetService)
-	app.Post("/services/:serviceName", c.PostService) */
+	app.Get("/services/:serviceName", c.GetService)
+	app.Post("/services/:serviceName", c.AddService)
 
-	app.Listen(":3000")
+	log.Fatal(app.Listen(":3000"))
 }
