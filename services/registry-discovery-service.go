@@ -11,6 +11,8 @@ import (
 type S interface{
 	GetServicesByName(name string) ([]models.Service, error)
 	AddService(name string, ip string) error
+	ServiceDown(name string, ip string) error
+	ServiceUp(name string, ip string) error
 }
 
 type service struct{}
@@ -40,4 +42,24 @@ func (*service) AddService(name string, ip string) error {
 		return err
 	}
 	return errors.New("service already exists")
+}
+
+func (*service) ServiceDown(name string, ip string) error {
+	var service models.Service
+	if err := database.DB.Where("name = ? AND ip = ?", name, ip).First(&service); err.Error != nil || err.RowsAffected == 0 {
+		return errors.New("service does not exist")
+	}
+	service.Status = "down"
+	err := database.DB.Save(&service).Error
+	return err
+}
+
+func (*service) ServiceUp(name string, ip string) error {
+	var service models.Service
+	if err := database.DB.Where("name = ? AND ip = ?", name, ip).First(&service); err.Error != nil || err.RowsAffected == 0 {
+		return errors.New("service does not exist")
+	}
+	service.Status = "up"
+	err := database.DB.Save(&service).Error
+	return err
 }
