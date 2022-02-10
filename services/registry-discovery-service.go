@@ -10,6 +10,7 @@ import (
 
 type S interface{
 	GetServicesByName(name string) ([]models.Service, error)
+	GetAllServices() ([]models.Service, error)
 	AddService(name string, ip string) error
 	ServiceDown(name string, ip string) error
 	ServiceUp(name string, ip string) error
@@ -19,6 +20,12 @@ type service struct{}
 
 func InitializeService() S {
 	return &service{}
+}
+
+func (*service) GetAllServices() ([]models.Service, error) {
+	var services []models.Service
+	err := database.DB.Find(&services).Error
+	return services, err
 }
 
 func (*service) GetServicesByName(name string) ([]models.Service, error) {

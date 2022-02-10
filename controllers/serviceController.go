@@ -1,6 +1,10 @@
 package controllers
 
 import (
+	"sort"
+	"time"
+
+	"github.com/Seifbarouni/go-service-registry/models"
 	"github.com/Seifbarouni/go-service-registry/services"
 
 	"github.com/gofiber/fiber/v2"
@@ -11,6 +15,14 @@ var s services.S = services.InitializeService()
 func GetService(c *fiber.Ctx) error {
 	name := c.Params("serviceName")
 	services, err := s.GetServicesByName(name)
+	if err != nil {
+		return err
+	}
+	return c.JSON(services)
+}
+
+func GetAllServices(c *fiber.Ctx) error {
+	services, err := s.GetAllServices()
 	if err != nil {
 		return err
 	}
@@ -54,4 +66,31 @@ func ServiceUp(c *fiber.Ctx) error {
 		return c.Status(403).JSON(fiber.Map{"error": err.Error()})
 	}
 	return c.SendStatus(204)
+}
+
+func Index(c *fiber.Ctx) error {
+	// get all services
+	services, err := s.GetAllServices()
+	if err != nil {
+		return c.Render("index", fiber.Map{
+			"Title": "Service Registry",
+			"Date":  time.Now(),
+			"Services": []models.Service{}},
+		)
+	}
+	// sort services by name
+	sort.Slice(services, func(i, j int) bool {
+		return services[i].Name < services[j].Name
+	})
+	// for each service, if the status is down then add a class to the element
+	for i := range services {
+		if services[i].Status == "down" {
+			services[i].Status = ""
+		}
+	}
+	return c.Render("index", fiber.Map{
+		"Title": "Service Registry",
+		"Date":  time.Now(),
+		"Services": services,
+	})
 }

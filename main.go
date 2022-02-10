@@ -7,6 +7,7 @@ import (
 	"github.com/Seifbarouni/go-service-registry/database"
 	"github.com/Seifbarouni/go-service-registry/routes"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html"
 	"github.com/joho/godotenv"
 )
 
@@ -19,7 +20,11 @@ func main() {
 
 	database.InitializeDB(os.Getenv("DB_CONN"))
 
-	app := fiber.New()
+	engine := html.New("./views",".html")
+
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
 
 	routes.GenerateRoutes(app)
 

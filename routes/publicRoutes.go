@@ -7,6 +7,7 @@ import (
 )
 
 func GenerateRoutes(app *fiber.App) {
+	app.Get("/", c.Index)
 	app.Get("/services/:serviceName", c.GetService)
 	app.Post("/services/:serviceName", c.AddService)
 	app.Delete("/services/:serviceName", c.ServiceDown)
