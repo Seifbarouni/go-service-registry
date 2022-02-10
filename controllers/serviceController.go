@@ -73,8 +73,8 @@ func Index(c *fiber.Ctx) error {
 	services, err := s.GetAllServices()
 	if err != nil {
 		return c.Render("index", fiber.Map{
-			"Title": "Service Registry",
-			"Date":  time.Now(),
+			"Title":    "Service Registry",
+			"Date":     time.Now().Format("2006-01-02 15:04:05"),
 			"Services": []models.Service{}},
 		)
 	}
@@ -89,8 +89,8 @@ func Index(c *fiber.Ctx) error {
 		}
 	}
 	return c.Render("index", fiber.Map{
-		"Title": "Service Registry",
-		"Date":  time.Now(),
+		"Title":    "Service Registry",
+		"Date":     time.Now().Format("2006-01-02 15:04:05"),
 		"Services": services,
 	})
 }
