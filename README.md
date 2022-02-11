@@ -13,3 +13,10 @@ PUT http://localhost:3000/services/[serviceName]?ip=[service ip address] --> Cha
 
 DELETE http://localhost:3000/services/[serviceName]?ip=[service ip address] --> Change service status to 'down'
 ```
+
+## Run the app :
+
+```
+docker build . -t golang_container
+docker-compose up
+```
