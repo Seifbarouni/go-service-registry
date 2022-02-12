@@ -65,6 +65,8 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
+                {{ if .Services}}
+
                 {{range .Services}}
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
@@ -86,6 +88,14 @@
                       Down
                     </span>
                     {{end}}
+                  </td>
+                </tr>
+                {{end}}
+                {{else}}
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      No services registered
                   </td>
                 </tr>
                 {{end}}
