@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"os"
 	"sort"
 	"time"
 
@@ -69,10 +70,21 @@ func ServiceUp(c *fiber.Ctx) error {
 }
 
 func Index(c *fiber.Ctx) error {
+	// get VERSION and ENV from env
+	version := os.Getenv("VERSION")
+	env := os.Getenv("ENV")
+	if version == "" {
+		version = "1.0.0"
+	}
+	if env == "" {
+		env = "development"
+	}
 	// get all services
 	services, err := s.GetAllServices()
 	if err != nil {
 		return c.Render("index", fiber.Map{
+			"Version":  version,
+			"Env":      env,
 			"Title":    "Service Registry",
 			"Date":     time.Now().Format("2006-01-02 15:04:05"),
 			"Services": []models.Service{}},
@@ -89,6 +101,8 @@ func Index(c *fiber.Ctx) error {
 		}
 	}
 	return c.Render("index", fiber.Map{
+		"Version":  version,
+		"Env":      env,
 		"Title":    "Service Registry",
 		"Date":     time.Now().Format("2006-01-02 15:04:05"),
 		"Services": services,
