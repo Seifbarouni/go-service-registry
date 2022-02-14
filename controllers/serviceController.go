@@ -5,7 +5,6 @@ import (
 	"sort"
 	"time"
 
-	"github.com/Seifbarouni/go-service-registry/models"
 	"github.com/Seifbarouni/go-service-registry/services"
 
 	"github.com/gofiber/fiber/v2"
@@ -23,20 +22,17 @@ func GetService(c *fiber.Ctx) error {
 }
 
 func GetAllServices(c *fiber.Ctx) error {
-	services, err := s.GetAllServices()
-	if err != nil {
-		return err
-	}
-	return c.JSON(services)
+	return c.JSON(s.GetAllServices())
 }
 
 func AddService(c *fiber.Ctx) error {
 	name := c.Params("serviceName")
 	ip := c.Query("ip")
-	if ip == "" || name == "" {
+	port := c.Query("port")
+	if ip == "" || name == "" || port == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "missing params"})
 	}
-	err := s.AddService(name, ip)
+	err := s.AddService(name, ip,port)
 	if err != nil {
 		return c.Status(403).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -46,10 +42,11 @@ func AddService(c *fiber.Ctx) error {
 func ServiceDown(c *fiber.Ctx) error {
 	name := c.Params("serviceName")
 	ip := c.Query("ip")
-	if ip == "" || name == "" {
+	port := c.Query("port")
+	if ip == "" || name == "" || port == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "missing params"})
 	}
-	err := s.ServiceDown(name, ip)
+	err := s.ServiceDown(name, ip,port)
 	if err != nil {
 		return c.Status(403).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -59,10 +56,11 @@ func ServiceDown(c *fiber.Ctx) error {
 func ServiceUp(c *fiber.Ctx) error {
 	name := c.Params("serviceName")
 	ip := c.Query("ip")
-	if ip == "" || name == "" {
+	port := c.Query("port")
+	if ip == "" || name == "" || port == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "missing params"})
 	}
-	err := s.ServiceUp(name, ip)
+	err := s.ServiceUp(name, ip,port)
 	if err != nil {
 		return c.Status(403).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -80,16 +78,8 @@ func Index(c *fiber.Ctx) error {
 		env = "development"
 	}
 	// get all services
-	services, err := s.GetAllServices()
-	if err != nil {
-		return c.Render("index", fiber.Map{
-			"Version":  version,
-			"Env":      env,
-			"Title":    "Service Registry",
-			"Date":     time.Now().Format("2006-01-02 15:04:05"),
-			"Services": []models.Service{}},
-		)
-	}
+	services := s.GetAllServices()
+	
 	// sort services by name
 	sort.Slice(services, func(i, j int) bool {
 		return services[i].Name < services[j].Name

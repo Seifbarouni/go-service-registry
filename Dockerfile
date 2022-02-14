@@ -10,7 +10,7 @@ RUN go mod download
 
 RUN go build -o main .
 
-EXPOSE 3000
+EXPOSE 8761
 
 CMD ["/app/main"]
 

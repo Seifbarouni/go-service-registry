@@ -3,20 +3,20 @@
 ## Availabe endpoints :
 
 ```
-GET http://localhost:3000/ --> Dashboard
+GET http://localhost:8671/ --> Dashboard
 
-GET http://localhost:3000/services/[serviceName] --> Get available instances that have name=serviceName
+GET http://localhost:8671/services/[serviceName] --> Get available instances that have name=serviceName
 
-POST http://localhost:3000/services/[serviceName]?ip=[service ip address] --> Add new service
+POST http://localhost:8671/services/[serviceName]?ip=[service ip address]&port=[service port] --> Add new service
 
-PUT http://localhost:3000/services/[serviceName]?ip=[service ip address] --> Change service status to 'up'
+PUT http://localhost:8671/services/[serviceName]?ip=[service ip address]&port=[service port] --> Change service status to 'up'
 
-DELETE http://localhost:3000/services/[serviceName]?ip=[service ip address] --> Change service status to 'down'
+DELETE http://localhost:8671/services/[serviceName]?ip=[service ip address]&port=[service port] --> Change service status to 'down'
 ```
 
 ## Run the app :
 
 ```
 docker build . -t golang_container
-docker-compose up
+docker run golang_container
 ```

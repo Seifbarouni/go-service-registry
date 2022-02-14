@@ -2,9 +2,7 @@ package main
 
 import (
 	"log"
-	"os"
 
-	"github.com/Seifbarouni/go-service-registry/database"
 	"github.com/Seifbarouni/go-service-registry/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
@@ -18,7 +16,6 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	database.InitializeDB(os.Getenv("DB_CONN"))
 
 	engine := html.New("./views",".html")
 
@@ -28,5 +25,5 @@ func main() {
 
 	routes.GenerateRoutes(app)
 
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":8671"))
 }
