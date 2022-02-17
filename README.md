@@ -17,6 +17,6 @@ DELETE http://localhost:8671/services/[serviceName]?ip=[service ip address]&port
 ## Run the app :
 
 ```
-docker build . -t golang_container
-docker run golang_container
+docker build . -t service_registry
+docker run -p 8671:8671 -t service_registry
 ```

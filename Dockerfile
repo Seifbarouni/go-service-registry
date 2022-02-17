@@ -8,9 +8,9 @@ WORKDIR /app
 
 RUN go mod download
 
-RUN go build -o main .
+RUN go build -o service_registry .
 
 EXPOSE 8761
 
-CMD ["/app/main"]
+CMD ["/app/service_registry"]
 

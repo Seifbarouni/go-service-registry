@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"os"
 	"sort"
 	"time"
 
@@ -68,15 +67,8 @@ func ServiceUp(c *fiber.Ctx) error {
 }
 
 func Index(c *fiber.Ctx) error {
-	// get VERSION and ENV from env
-	version := os.Getenv("VERSION")
-	env := os.Getenv("ENV")
-	if version == "" {
-		version = "1.0.0"
-	}
-	if env == "" {
-		env = "development"
-	}
+	version := "v1"
+	env := "dev"
 	// get all services
 	services := s.GetAllServices()
 
