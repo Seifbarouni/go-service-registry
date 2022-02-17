@@ -32,7 +32,7 @@ func AddService(c *fiber.Ctx) error {
 	if ip == "" || name == "" || port == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "missing params"})
 	}
-	err := s.AddService(name, ip,port)
+	err := s.AddService(name, ip, port)
 	if err != nil {
 		return c.Status(403).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -46,7 +46,7 @@ func ServiceDown(c *fiber.Ctx) error {
 	if ip == "" || name == "" || port == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "missing params"})
 	}
-	err := s.ServiceDown(name, ip,port)
+	err := s.ServiceDown(name, ip, port)
 	if err != nil {
 		return c.Status(403).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -60,7 +60,7 @@ func ServiceUp(c *fiber.Ctx) error {
 	if ip == "" || name == "" || port == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "missing params"})
 	}
-	err := s.ServiceUp(name, ip,port)
+	err := s.ServiceUp(name, ip, port)
 	if err != nil {
 		return c.Status(403).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -79,7 +79,7 @@ func Index(c *fiber.Ctx) error {
 	}
 	// get all services
 	services := s.GetAllServices()
-	
+
 	// sort services by name
 	sort.Slice(services, func(i, j int) bool {
 		return services[i].Name < services[j].Name
