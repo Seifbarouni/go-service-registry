@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"sort"
+	//"sort"
 	"time"
 
 	"github.com/Seifbarouni/go-service-registry/services"
@@ -71,11 +71,11 @@ func Index(c *fiber.Ctx) error {
 	env := "dev"
 	// get all services
 	services := s.GetAllServices()
-
+/* 
 	// sort services by name
 	sort.Slice(services, func(i, j int) bool {
 		return services[i].Name < services[j].Name
-	})
+	}) */
 	// for each service, if the status is down then add a class to the element
 	for i := range services {
 		if services[i].Status == "down" {

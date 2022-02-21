@@ -8,7 +8,9 @@ import (
 
 type services []*models.Service
 
-var allServices services = services{}
+var allServices services = []*models.Service{
+	{ID: 1, Name: "service1", Ip: "125.32.2.2", Port: "8080", Status: "up"},
+}
 
 type S interface {
 	GetServicesByName(name string) ([]models.Service, error)
@@ -41,7 +43,7 @@ func (*service) GetServicesByName(name string) ([]models.Service, error) {
 func (*service) AddService(name string, ip string, port string) error {
 	for _, service := range allServices {
 		if service.Name == name && service.Ip == ip && service.Port == port {
-			return errors.New("service already exists")
+			return nil
 		}
 	}
 	service := &models.Service{
